@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	    <meta charset="utf-8">
+	    <meta name="format-detection" content="telephone=no">
+	    <meta name="msapplication-tap-highlight" content="no">
+	    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+	    <title>交通罚款缴费抽奖</title>
+	    <script type="text/javascript">
+			document.write("<script src='js/config.js?version="+new Date().getTime()+"'><\/script>");
+		</script>
+		<script type="text/javascript">
+			loadCss("common");
+			loadCss("index"); 
+		</script>
+	</head>
+	<body>
+		<div class="top-bg">
+			<img src="images/top_bg.png" alt="" width="100%" height="242">
+		</div>
+		<div class="lucky-main">
+			<div class="lucky-box">
+		        <div class="mui-flex row">
+		            <div class="cell col">
+		            	<img src="images/price_no.png" width="100%" height="50">
+		            	<span class="icon-mask"></span>
+		            </div>
+		            <div class="cell col">
+		            	<img src="images/price_30.png" width="100%" height="50">
+		            	<span class="icon-mask"></span>
+		            </div>
+		            <div class="cell col">
+		            	<img src="images/price_no.png" width="100%" height="50">
+		            	<span class="icon-mask"></span>
+		            </div>
+		            <div class="cell col">
+		            	<img src="images/price_30.png" width="100%" height="50">
+		            	<span class="icon-mask"></span>
+		            </div>
+		        </div>
+		        <div class="mui-flex row">
+		            <div class="cell col">
+		            	<img src="images/price_20.png" width="100%" height="50">
+		            	<span class="icon-mask"></span>
+		            </div>
+		            <div class="cell col cat-col"></div>
+		            <div class="cell col cat-col"></div>
+		            <div class="cell col">
+		            	<img src="images/price_no.png" width="100%" height="50">
+		            	<span class="icon-mask"></span>
+		            </div>
+		        </div>
+		        <div class="mui-flex row">
+		            <div class="cell col">
+		            	<img src="images/price_no.png" width="100%" height="50">
+		            	<span class="icon-mask"></span>
+		            </div>
+		            <div class="cell col cat-col"></div>
+		            <div class="cell col cat-col"></div>
+		            <div class="cell col">
+		            	<img src="images/price_60.png" width="100%" height="50">
+		            	<span class="icon-mask"></span>
+		            </div>
+		        </div>
+		        <div class="mui-flex row">
+		            <div class="cell col">
+		            	<img src="images/price_200.png" width="100%" height="50">
+		            	<span class="icon-mask"></span>
+		            </div>
+		            <div class="cell col">
+		            	<img src="images/price_20.png" width="100%" height="50">
+		            	<span class="icon-mask"></span>
+		            </div>
+		            <div class="cell col">
+		            	<img src="images/price_no.png" width="100%" height="50">
+		            	<span class="icon-mask"></span>
+		            </div>
+		            <div class="cell col">
+		            	<img src="images/price_20.png" width="100%" height="50">
+		            	<span class="icon-mask"></span>
+		            </div>
+		        </div>
+		        <img src="images/cat01.png" alt="" width="50%" height="100" class="cat">
+    		</div>
+		</div>
+		<div class="lucky-num">可抽奖次数：<label id="num">0</label>次</div>
+		<div class="cursor lucky-btn gray-btn">开始抽奖</div>
+		<div class="detail">
+			<p class="title">活动细则说明</p>
+			<p class="con">
+				1.活动时间 2017年8月8日至12月31日。<br>
+				2.仅限成都市分行注册用户参与。<br>
+				3.活动期间，凡通过优友宝支付缴纳交通罚款，支付成功后，有机会获得抽奖机会一次，以是否跳转抽奖页面为准。<br>
+				4.奖品为舞东风电子券，仅限于使用优友宝支付时使用，每次仅能使用1张券。<br>
+				5.1张电子券限一次性使用，不折现、不找零。<br>
+				6.以上活动最终解释权归中国邮政储蓄银行股份有限公司成都市分行所有。
+			</p>
+		</div>
+		<div class="tan-box">
+			<div class="box">
+				<p class="title"><!-- 可抽奖次数：0次 --></p>
+				<p class="con">
+					<!-- 获得舞东风电子券20元/30元/60元/200元。<br>（请注意查收电子券短信！） -->
+				</p>
+				<div class="cursor confirm"><!-- 去缴纳交通罚款 --></div>
+			</div>
+		</div>
+		<script type="text/javascript">
+			loadJs("jquery");
+			loadJs("common"); 
+		</script>
+		<script type="text/javascript">
+
+			var start_date=20170808000000,
+				end_date=20171231240000,
+				luckynum=0,//幸运数字
+				number=0,code=0,name="";//抽奖次数，代码，名字
+
+			// 测试
+			number=4;
+			$("#num").text(number);
+            $(".lucky-btn").removeClass("gray-btn").addClass("start-btn");
+
+			function getToken(token){
+			    authtoken=token;
+			    getNum();
+			}
+			// 4-谢谢参与
+			// 3-20元舞东风电子券
+			// 2-30元舞东风电子券
+			// 1-60元舞东风电子券
+			// 0-200元舞东风电子券
+			var arr_4=[1,3,5,8,11];
+			var arr_3=[7,9,12];
+			var arr_2=[2,4];
+			var arr_1=[6];
+			var arr_0=[10];
+			// var index = Math.floor((Math.random()*arr.length));
+			
+            // 点击确定
+            $(".confirm-btn").live("click",function(){
+            	$(".tan-box").removeClass("tan-box-wrap");
+				$(".tan-box .box").hide();
+            })
+            // 去缴纳交通罚款
+            $(".pay-btn").live("click",function(){
+            	if(ismobile(1)==1){
+	                Android.toPayTrafficTicket();
+	            }else{
+	                jsToios("toPayTrafficTicket");
+	            }
+            })
+			// 点击开始抽奖
+			var flag_click=true;
+			$(".start-btn").live("click",function(){
+				if(flag_click && number>0){
+					flag_click=false;
+					// lottery();
+					// 测试
+					luckynum=getLuckynum(3);
+                	StartGame();
+				}
+			})
+
+			// 点击抽奖，发起抽奖操作
+			function lottery(){
+				// $("body").append($(circle_html));
+				var url="traffic/traffic/lottery";
+	            var data={
+	            	flag:1,
+	            	authtoken:authtoken,
+	            	client:client
+	            }
+	            ajaxRequest(url, 'GET',true, data, callback);
+                function callback(result) {
+                	// alert(JSON.stringify(result));
+                	if(result.code==200){
+                		var data=result.data;
+                		code=parseInt(data.code);
+                		luckynum=getLuckynum(code);
+                		StartGame();
+                	}else{
+						tipInformation(result.msg);
+						flag_click=true;
+					}
+                	// $(".mask-wrap").remove();
+                }
+            }
+
+			// 查询用户抽奖次数
+			function getNum(){
+				var url="traffic/traffic/getNum";
+	            var data={
+	            	flag:1,
+	            	authtoken:authtoken,
+	            	client:client
+	            }
+	            ajaxRequest(url, 'GET',true, data, callback);
+                function callback(result) {
+                	// alert(JSON.stringify(result));
+                	if(result.code==200){
+                		var datetime=result.systemTime,//2017-07-21 11:01:07
+            			current_date=parseInt(datetime.substring(4,0)+datetime.substring(7,5)+datetime.substring(10,8)+datetime.substring(13,11)+datetime.substring(16,14)+datetime.substring(19,17));
+            			number=parseInt(result.num);
+                		if(current_date<start_date){
+			            	$(".tan-box p.title").text("8月8日准时开转");
+			            	$(".tan-box .confirm").text("确定").addClass("confirm-btn");
+			            	$(".tan-box").addClass("tan-box-wrap");
+							$(".tan-box .box").show();
+			            }else if(current_date>end_date){
+			            	$(".tan-box p.title").text("活动已结束");
+			            	$(".tan-box .confirm").text("确定").addClass("confirm-btn");
+			            	$(".tan-box").addClass("tan-box-wrap");
+							$(".tan-box .box").show();
+			            }else if(number<=0){
+							$(".lucky-btn").text("去缴纳交通罚款").removeClass("gray-btn").addClass("pay-btn");
+                		}else{
+                			$("#num").text(number);
+                			$(".lucky-btn").removeClass("gray-btn").addClass("start-btn");
+                		}
+                	}else if(result.code==800){
+						tipInformation(result.msg,function(){
+							if(ismobile(1)==1){
+						        Android.callLogin(800);
+						    }else{
+						        jsToios("login",800);
+						    }
+						});
+					}else{
+						tipInformation(result.msg);
+					}
+					$(".mask-wrap").remove();
+                }
+			}
+
+			function getLuckynum(code){
+				var this_luckynum=0;
+            	switch(code){
+					case 4:{
+						var index=Math.floor((Math.random()*arr_4.length));
+                		this_luckynum = arr_4[index];
+                		break;
+					}
+					case 3:{
+						var index=Math.floor((Math.random()*arr_3.length));
+                		this_luckynum = arr_3[index];
+                		name="舞东风电子券20元";
+                		break;
+					}
+					case 2:{
+						var index=Math.floor((Math.random()*arr_2.length));
+                		this_luckynum = arr_2[index];
+                		name="舞东风电子券30元";
+                		break;
+					}
+					case 1:{
+						var index=Math.floor((Math.random()*arr_1.length));
+                		this_luckynum = arr_1[index];
+                		name="舞东风电子券60元";
+                		break;
+					}
+					case 0:{
+						var index=Math.floor((Math.random()*arr_0.length));
+                		this_luckynum = arr_0[index];
+                		name="舞东风电子券200元";
+                		break;
+					}
+				}
+				return this_luckynum;
+            }
+
+			
+	        //定义数组
+	        function GetSide(m,n){
+	            //初始化数组
+	            var arr = [];
+	            for(var i=0;i<m;i++){
+	                arr.push([]);
+	                for(var j=0;j<n;j++){
+	                    arr[i][j]=i*n+j;
+	                }
+	            }
+	            //获取数组最外圈
+	            var resultArr=[];
+	            var tempX=0,
+	             	tempY=0,
+	             	direction="Along",
+	             	count=0;
+	            while(tempX>=0 && tempX<n && tempY>=0 && tempY<m && count<m*n)
+	            {
+	                count++;
+	                resultArr.push([tempY,tempX]);
+	                if(direction=="Along"){
+	                    if(tempX==n-1)
+	                        tempY++;
+	                    else
+	                        tempX++;
+	                    if(tempX==n-1&&tempY==m-1)
+	                        direction="Inverse"
+	                }else{
+	                    if(tempX==0)
+	                        tempY--;
+	                    else
+	                        tempX--;
+	                    if(tempX==0&&tempY==0)
+	                        break;
+	                }
+	            }
+	            return resultArr;
+	        }
+	        
+	        var index=0,           //当前亮区位置
+	            prevIndex=0,          //前一位置
+	            Speed=50,           //初始速度
+	            Time,            //定义对象
+	            arr = GetSide(4,4),         //初始化数组
+	            EndIndex=0,           //决定在哪一格变慢
+	            // tb = document.getElementById("tb"),     //获取tb对象 
+	            cycle=0,           //转动圈数   
+	            EndCycle=0,           //计算圈数
+	            flag=false,           //结束转动标志 
+	            quick=0;           //加速
+	        
+	        function StartGame(){
+	            cycle=0;
+	            flag=false;
+	            EndIndex=luckynum;
+	            EndCycle=1;
+	            Speed=50;
+	            number--;
+	            $("#num").text(number);
+	            $(".cat").attr("src","images/cat02.gif");
+	            $(".lucky-btn").removeClass("start-btn").addClass("gray-btn");
+	            Time = setInterval(Star,Speed);
+	        }
+	        
+	        function Star(){
+	            //跑马灯变速
+	            if(flag==false){
+	              	//走五格开始加速
+	             	if(quick==4){
+	                 	clearInterval(Time);
+	                 	Speed=50;
+	                 	Time=setInterval(Star,Speed);
+	             	}
+	             	//跑N圈减速
+	             	if(cycle==EndCycle+1 && index==EndIndex){
+	              		clearInterval(Time);
+	                 	Speed=300;
+	                 	flag=true;         //触发结束
+	                 	Time=setInterval(Star,Speed);
+	             	}
+	            }
+	            
+	            if(index>=arr.length){
+	                index=0;
+	                cycle++;
+	            }
+	            
+	            //结束转动并选中号码
+	            if(flag==true && index==luckynum-1){ 
+	                quick=0;
+	                clearInterval(Time);
+	                flag_click=true;
+	                $(".cat").attr("src","images/cat03.png");
+	                if(number<=0){
+	                	// $(".lucky-btn").removeClass("start-btn").addClass("gray-btn");
+	                	$(".lucky-btn").text("去缴纳交通罚款").removeClass("start-btn").addClass("pay-btn");
+	                }else{
+	                	$(".lucky-btn").addClass("start-btn").removeClass("gray-btn");
+	                }
+	                if(code==4){
+	                	$(".tan-box p.title").text("谢谢参与！");
+	                	$(".tan-box p.con").html("");
+	                }else{
+	                	$(".tan-box p.title").text("恭喜您！");
+		                $(".tan-box p.con").html("获得"+name+"<br>（请注意查收电子券短信）");
+	                }
+	                $(".tan-box .confirm").text("确定").addClass("confirm-btn");
+	            	$(".tan-box").addClass("tan-box-wrap");
+					$(".tan-box .box").show();
+	            }
+	          
+	            $(".lucky-box .row").eq(arr[index][0]).find(".col").eq(arr[index][1]).find("span").removeClass("icon-mask");
+	            if(index>0)
+	                prevIndex=index-1;
+	            else{
+	                prevIndex=arr.length-1;
+	            }
+	            $(".lucky-box .row").eq(arr[prevIndex][0]).find(".col").eq(arr[prevIndex][1]).find("span").addClass("icon-mask");
+	            index++; 
+	            quick++;  
+	        }
+		</script>
+	</body>
+</html>
